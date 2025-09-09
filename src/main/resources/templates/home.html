@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Home- TaskHub</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/home.css}">
+
+</head>
+
+<body>
+
+	<div class="sidebar">
+		<h2>TaskHub</h2>
+		<ul class="sidebar-menu">
+			<li>
+				<a href="#" class="active"><span class="icon">🏠</span> Dashboard</a>
+			</li>
+			<li>
+				<a href="#" onclick="navigateToProfile()"><span class="icon">👤</span> Profile</a>
+			</li>
+			<li th:if="${response.roles.contains('ROLE_ADMIN')}">
+				<a href="#" onclick="goToManageUsers()"><span class="icon">👥</span> Manage Users</a>
+			</li>
+			<li>
+				<a href="#" onclick="logout()"><span class="icon">🚪</span> Logout</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="main-content">
+		<div class="header">
+			<h1>Welcome to TaskHub!</h1>
+		</div>
+
+		<div class="welcome-card">
+			<h3 th:text="'Welcome, ' + ${response.username} + '!'">Welcome to TaskHub!</h3>
+
+			<div class="user-info">
+				<label>Status:</label>
+				<span th:text="${response.message}"></span>
+
+				<label>Roles:</label>
+				<span>
+					<span th:each="role : ${response.roles}" class="role-badge" th:text="${role}"></span>
+				</span>
+			</div>
+
+			<div th:if="${response.roles.contains('ROLE_ADMIN')}" class="admin-section">
+				<h4>🔧 Admin Panel</h4>
+				<p>As an administrator, you have elevated privileges to manage the application and its users.</p>
+				<ul>
+					<li><a href="#" onclick="goToManageUsers()">Manage User Accounts and Roles</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<span id="jwtToken" th:text="${response.token}" style="display:none;"></span>
+	</div>
+
+
+	<script th:src="@{/js/home.js}"></script>
+
+
+</body>
+
+</html>

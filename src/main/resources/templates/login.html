@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Login - TaskHub</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<meta charset="UTF-8">
+	<title>Login - TaskHub</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/login.css}">
+
 </head>
+
 <body>
-    <div class="container">
-        <h2>Welcome to TaskHub</h2>
-        <h3>Login to Your Account</h3>
+	<div class="container">
+		<h2>TaskHub</h2>
+		<h3>Login to Your Account</h3>
 
-        <!-- Link to Registration -->
-        <div style="text-align: center; margin-bottom: 20px;">
-            <a th:href="@{/api/auth/register}" style="color: #3498db; text-decoration: none;">Don't have an account? Register here</a>
-        </div>
+		<div class="register-link">
+			<a th:href="@{/api/auth/register}">Don't have an account? Register here</a>
+		</div>
 
-        <!-- Error Message -->
-        <div th:if="${error}" style="background-color: #ffebee; color: #c62828; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
-            <p th:text="${error}"></p>
-        </div>
+		<div th:if="${error}" class="error-message">
+			<p th:text="${error}"></p>
+		</div>
 
-        <!-- Login Form -->
-        <form th:action="@{/api/auth/login}" th:object="${loginRequest}" method="post">
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" th:field="*{userName}" placeholder="Enter your username" required />
-            </div>
+		<form th:action="@{/api/auth/home}" th:object="${loginRequest}" method="post">
+			<div>
+				<label for="username">Username:</label>
+				<input type="text" id="username" th:field="*{userName}" placeholder="Enter your username" required />
+			</div>
 
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" th:field="*{password}" placeholder="Enter your password" required />
-            </div>
+			<div>
+				<label for="password">Password:</label>
+				<input type="password" id="password" th:field="*{password}" placeholder="Enter your password"
+					required />
+			</div>
 
-            <div>
-                <button type="submit">Login</button>
-            </div>
-        </form>
-    </div>
+			<div>
+				<button type="submit">Login</button>
+			</div>
+		</form>
+	</div>
 </body>
+
 </html>

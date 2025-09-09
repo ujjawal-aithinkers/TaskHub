@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users - TaskHub</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/userlist.css}">
+   
+</head>
+<body>
+<div class="container">
+    <h2><span style="color:#3498db;">👥</span> All Users</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, iterStat : ${users}">
+            <td th:text="${iterStat.count}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.email}"></td>
+            <td>
+                <span class="role-badge" th:text="${user.role}"></span>
+            </td>
+            <td>
+                <a class="btn btn-edit"
+                   th:href="@{/api/auth/edit-role/{id}(id=${user.id}, jwt_token=${param.jwt_token})}">Edit Role</a>
+				
+                <a class="btn btn-delete"
+                   th:href="@{/api/auth/delete/{id}(id=${user.id}, jwt_token=${param.jwt_token})}"
+                   onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(users)}">
+            <td colspan="5" class="empty-state">No users found.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px; text-align: center;">
+        <a class="btn back-btn" href="/api/auth/home">
+            🏠 <span>Back to Home</span>
+        </a>
+    </div>
+</div>
+</body>
+</html>
