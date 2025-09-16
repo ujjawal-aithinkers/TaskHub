@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Local-only files (not for PR)
+src/main/java/com/aithinkers/TaskHub/config/SecurityConfig.java
+src/main/java/com/aithinkers/TaskHub/config/StreamQuestions.java
