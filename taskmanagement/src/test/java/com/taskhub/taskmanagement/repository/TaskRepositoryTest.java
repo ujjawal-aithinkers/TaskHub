@@ -5,8 +5,7 @@ import com.taskhub.taskmanagement.entity.TaskCategory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import static org.mockito.Mockito.verify;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class TaskRepositoryTest {
     @Mock
     private TaskRepository taskRepository;
@@ -98,5 +97,63 @@ public class TaskRepositoryTest {
                 "Test Task", "Test Description", 1L, TaskCategory.FRONTEND);
 
     }
+    @Test
+    public void testSearchTasksByName() {
+        Task task = new Task();
+        task.setTaskName("Test Task");
+        when(taskRepository.searchTasks("Test")).thenReturn(List.of(task));
+        List<Task> tasks = taskRepository.searchTasks("Test");
+        assertEquals(1, tasks.size());
+        assertEquals("Test Task", tasks.get(0).getTaskName());
+    }
+
+    @Test
+    public void testSearchTasksByDescription() {
+        Task task = new Task();
+        task.setTaskDescription("Test Description");
+        when(taskRepository.searchTasks("Test Description")).thenReturn(List.of(task));
+        List<Task> tasks = taskRepository.searchTasks("Test Description");
+        assertEquals(1, tasks.size());
+        assertEquals("Test Description", tasks.get(0).getTaskDescription());
+    }
+
+    @Test
+    public void testSearchTasksByProjectId() {
+        Task task = new Task();
+        task.setProjectId(1L);
+        when(taskRepository.searchTasks("1")).thenReturn(List.of(task));
+        List<Task> tasks = taskRepository.searchTasks("1");
+        assertEquals(1, tasks.size());
+        assertEquals(1L, tasks.get(0).getProjectId().longValue());
+    }
+    @Test
+    public void testSearchTasksByCategory() {
+        Task task = new Task();
+        task.setCategory(TaskCategory.FRONTEND);
+        when(taskRepository.searchTasks("FRONTEND")).thenReturn(List.of(task));
+        List<Task> tasks = taskRepository.searchTasks("FRONTEND");
+        assertEquals(1, tasks.size());
+        assertEquals(TaskCategory.FRONTEND, tasks.get(0).getCategory());
+    }
+
+    @Test
+    public void testSearchTasksMultipleResults() {
+        Task task1 = new Task();
+        task1.setTaskName("Test Task 1");
+        Task task2 = new Task();
+        task2.setTaskName("Test Task 2");
+        when(taskRepository.searchTasks("Test")).thenReturn(List.of(task1, task2));
+        List<Task> tasks = taskRepository.searchTasks("Test");
+        assertEquals(2, tasks.size());
+    }
+
+    @Test
+    public void testSearchTasksNoResults() {
+        when(taskRepository.searchTasks("Non-existent task")).thenReturn(List.of());
+        List<Task> tasks = taskRepository.searchTasks("Non-existent task");
+        assertTrue(tasks.isEmpty());
+    }
+
+
 
 }

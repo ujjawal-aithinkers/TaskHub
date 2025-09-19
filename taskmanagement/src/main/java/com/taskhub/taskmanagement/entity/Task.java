@@ -1,11 +1,9 @@
 package com.taskhub.taskmanagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -14,15 +12,18 @@ import java.time.LocalDate;
 @Table(name = "tasks")
 @Schema(description = "Task entity")
 public class Task {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
     @NotBlank(message = "Task name is required")
     @Size(min = 10, message = "Task name should be at least 10 characters long")
+    @Pattern(regexp = "^[a-zA-Z0-9\\s.,!?\\-]+$", message = "Task name should contain only letters, numbers, spaces, and basic punctuation")
     private String taskName;
     @NotBlank(message = "Task description is required")
-    @Size(min = 1000, message = "Task description should be at least 1000 characters long")
+    @Size(min = 1000,max = 2000, message = "Task description should be between 1000 and 2000 characters long")
     @Column(length = 2000)
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[\\\\w\\\\s.,!?*\\\\\\\"])[a-zA-Z0-9\\s.,!?*\\\"\\-]{5,}$", message = "Task description should only letters, numbers, spaces, and basic punctuation")
     private String taskDescription;
     @NotNull(message = "Project ID is required")
     private Long projectId; //Foreign key for project tabe

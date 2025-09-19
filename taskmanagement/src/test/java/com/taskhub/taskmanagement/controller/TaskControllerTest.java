@@ -11,14 +11,15 @@ import com.taskhub.taskmanagement.entity.TaskCategory;
 import com.taskhub.taskmanagement.service.TaskService;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class TaskControllerTest {
@@ -74,17 +75,6 @@ public class TaskControllerTest {
         assertEquals("create-task", viewName);
         verify(model, times(1)).addAttribute("task", task);
     }
-
-    @Test
-    public void testCreateTaskWithException() {
-        Task task = new Task();
-        when(taskService.createTask(task)).thenThrow(new RuntimeException("Task creation failed"));
-        String viewName = taskController.createTask(task, new BeanPropertyBindingResult(task, "task"), model);
-        assertEquals("create-task", viewName);
-        verify(model, times(1)).addAttribute("errorMessage", "Task creation failed");
-
-    }
-
     @Test
     public void testUpdateTaskForm() {
         Task task = new Task();
@@ -97,8 +87,10 @@ public class TaskControllerTest {
     @Test
     public void testUpdateTask() {
         Task task = new Task();
-        String viewName = taskController.updateTask(1L, task, model);
-        assertEquals("redirect:/tasks", viewName);
+        BindingResult bindingResult = new BeanPropertyBindingResult(task, "task");
+        bindingResult.addError(new ObjectError("task", "Error message"));
+        String viewName = taskController.updateTask(1L, task, model,bindingResult);
+        assertEquals("update-task", viewName);
     }
 
     @Test

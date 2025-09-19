@@ -1,6 +1,8 @@
 package com.taskhub.taskmanagement.service;
 
 import com.taskhub.taskmanagement.entity.Task;
+import com.taskhub.taskmanagement.entity.TaskStatus;
+import com.taskhub.taskmanagement.exception.TaskNotFoundException;
 import com.taskhub.taskmanagement.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -81,7 +83,7 @@ public class TaskServiceTest {
     @Test
     public void testGetTaskByIdNotFound() {
         when(taskRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> taskService.getTaskById(1L));
+        assertThrows(TaskNotFoundException.class, () -> taskService.getTaskById(1L));
     }
     @Test
     public void testCreateTaskAlreadyExists() {
@@ -95,7 +97,7 @@ public class TaskServiceTest {
         Task task = new Task();
         task.setTaskId(1L);
         when(taskRepository.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(NoSuchElementException.class, () -> taskService.updateTask(task));
+        assertThrows(TaskNotFoundException.class, () -> taskService.updateTask(task));
     }
     @Test
     public void testSearchTasks() {
@@ -105,6 +107,37 @@ public class TaskServiceTest {
         assertEquals(tasks, result);
     }
 
+    @Test
+    public void testGetTasksByStatusTodo() {
+        Task task = new Task();
+        task.setStatus(TaskStatus.TODO);
+        when(taskRepository.findByStatus(TaskStatus.TODO)).thenReturn(List.of(task));
+        List<Task> tasks = taskService.getTasksByStatus(TaskStatus.TODO);
+        assertEquals(1, tasks.size());
+        assertEquals(TaskStatus.TODO, tasks.get(0).getStatus());
     }
+
+    @Test
+    public void testGetTasksByStatusInProgress() {
+        Task task = new Task();
+        task.setStatus(TaskStatus.IN_PROGRESS);
+        when(taskRepository.findByStatus(TaskStatus.IN_PROGRESS)).thenReturn(List.of(task));
+        List<Task> tasks = taskService.getTasksByStatus(TaskStatus.IN_PROGRESS);
+        assertEquals(1, tasks.size());
+        assertEquals(TaskStatus.IN_PROGRESS, tasks.get(0).getStatus());
+    }
+
+    @Test
+    public void testGetTasksByStatusDone() {
+        Task task = new Task();
+        task.setStatus(TaskStatus.DONE);
+        when(taskRepository.findByStatus(TaskStatus.DONE)).thenReturn(List.of(task));
+        List<Task> tasks = taskService.getTasksByStatus(TaskStatus.DONE);
+        assertEquals(1, tasks.size());
+        assertEquals(TaskStatus.DONE, tasks.get(0).getStatus());
+    }
+
+
+}
 
 

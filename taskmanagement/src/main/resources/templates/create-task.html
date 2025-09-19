@@ -40,7 +40,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
+            width: 80%;
         }
 
         .create-task-form input[type="submit"]:hover {
@@ -102,11 +102,20 @@
         <label for="createdBy">Created By:</label>
         <input type="text" id="createdBy" th:field="*{createdBy}" />
         <span th:if="${#fields.hasErrors('createdBy')}" th:errors="*{createdBy}"style="color: red;"></span>
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <a th:href="@{/tasks}"
+               style="background-color: blue; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none;">
+                Back
+            </a>
 
         <input type="submit" value="Create Task" />
+        </div>
+
         <p th:if="${errorMessage}" style="color: red;" th:text="${errorMessage}"></p>
 
     </form>
+
+
 </div>
 </body>
 </html>

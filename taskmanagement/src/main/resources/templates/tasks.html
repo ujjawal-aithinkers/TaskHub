@@ -187,8 +187,19 @@ background-color: #3498db;
         width: 100%;
         font-size: 16px;
     }
+}.back-to-home {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+    text-align: center;
 }
-   </style>
+    </style>
 </head>
 <body>
 <div class="container">
@@ -242,6 +253,7 @@ background-color: #3498db;
         <a th:href="@{/tasks/status/in-progress}" class="task-count in-progress">In Progress: <span th:text="${inProgressCount}">0</span></a>
         <a th:href="@{/tasks/status/todo}" class="task-count todo">To-Do: <span th:text="${todoCount}">0</span></a>
         <div>Total Tasks: <span th:text="${totalCount}">0</span></div>
+        <a th:href="@{/tasks}" class="back-to-home">Back to Home</a>
     </div>
 
     <a th:href="@{/tasks/create}"><button class="create-task-btn">Create Task</button>

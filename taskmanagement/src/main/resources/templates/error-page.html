@@ -5,10 +5,52 @@
     <style>
         .error-message {
             color: red;
+        } body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
         }
+
+        .container {
+            max-width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+        }
+
+        .back-to-home {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
+<div class="container">
 <h1>Error Occurred</h1>
 <div th:if="${errorMessage}">
     <p class="error-message" th:text="${errorMessage}"></p>
@@ -18,7 +60,8 @@
         <li th:each="error : ${errors}" th:text="${error.key} + ': ' + ${error.value}" class="error-message"></li>
     </ul>
 </div>
-<a th:href="@{/}">Back to Home</a>
+<a th:href="@{/tasks}" class="back-to-home">Back to Home</a>
+</div>
 </body>
 </html>
 
